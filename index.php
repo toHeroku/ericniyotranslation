@@ -94,6 +94,7 @@ and open the template in the editor.
             </form>
         
         <?php
+        include("connection.php");
         $noun = filter_input(INPUT_POST, 'Vname');
         $kin = filter_input(INPUT_POST, 'kin');
         $eng = filter_input(INPUT_POST, 'eng');
