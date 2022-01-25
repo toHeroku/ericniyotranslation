@@ -102,7 +102,7 @@ and open the template in the editor.
         $eng = filter_input(INPUT_POST, 'eng');
         $fren = filter_input(INPUT_POST, 'fren');
         $kisw = filter_input(INPUT_POST, 'kisw');
-include 'dbConnect.php';
+include 'connection.php';
 if (mysqli_connect_error()){
 die('Connect Error ('. mysqli_connect_errno() .') '
 . mysqli_connect_error());
