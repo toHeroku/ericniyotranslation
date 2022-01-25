@@ -1,4 +1,4 @@
- 
+
 
 <DOCKTYPE HTML>
     <!DOCTYPE html>
@@ -56,15 +56,7 @@
   </html>
 
 <?php
-  $cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-$cleardb_server = $cleardb_url["host"];
-$cleardb_username = $cleardb_url["user"];
-$cleardb_password = $cleardb_url["pass"];
-$cleardb_db = substr($cleardb_url["path"],1);
-$active_group = 'default';
-$query_builder = TRUE;
-$con = mysqli_connect($cleardb_server, $cleardb_username, $cleardb_password, $cleardb_db);
-
+include 'dbConnect.php';
 $query ="SELECT Kinyarwanda FROM noun_translation ORDER BY RAND() LIMIT 1";
     $word = filter_input(INPUT_POST, 'var');
     
@@ -93,7 +85,7 @@ print"</td></tr>";
 ?>
     <?php
       if (isset($_POST['kin'])&& $word !=null){
-          $result = mysqli_query($con, "SELECT Kinyarwanda FROM noun_translation
+          $result = mysqli_query($conn, "SELECT Kinyarwanda FROM noun_translation
                 WHERE Kinyarwanda LIKE '%{$word}%' OR English LIKE '%{$word}%' OR French LIKE '%{$word}' OR Kiswahili LIKE '%{$word}'");    
 ?>
 <TABLE border ="2">
@@ -113,7 +105,7 @@ print"</td></tr>";
 ?>
     <?php
       if (isset ($_POST['eng']) && $word !=null) {
-          $result = mysqli_query($con, "SELECT English FROM noun_translation
+          $result = mysqli_query($conn, "SELECT English FROM noun_translation
     WHERE Kinyarwanda LIKE '%{$word}%' OR English LIKE '%{$word}%' OR French LIKE '%{$word}' OR Kiswahili LIKE '%{$word}'");
     ?>
     <TABLE class="td">
@@ -133,7 +125,7 @@ while ($row = mysqli_fetch_array($result))
 ?>
     <?php
 if (isset ($_POST['fren'])&& $word != NULL) {
-    $result = mysqli_query($con, "SELECT French FROM noun_translation
+    $result = mysqli_query($conn, "SELECT French FROM noun_translation
     WHERE Kinyarwanda LIKE '%{$word}%' OR English LIKE '%{$word}%' OR French LIKE '%{$word}' OR Kiswahili LIKE '%{$word}'");
     ?>
     <TABLE  class="td">
@@ -153,7 +145,7 @@ print"</td></tr>";
 ?>
     <?php
 if (isset ($_POST['kisw']) && $word !=NULL) {
-    $result = mysqli_query($con, "SELECT Kiswahili FROM noun_translation
+    $result = mysqli_query($conn, "SELECT Kiswahili FROM noun_translation
     WHERE Kinyarwanda LIKE '%{$word}%' OR English LIKE '%{$word}%' OR French LIKE '%{$word}' OR Kiswahili LIKE '%{$word}'");
 ?>
     <TABLE class="td">
@@ -170,6 +162,6 @@ print"</td></tr>";
 }
 }
  
-mysqli_close($con);
+mysqli_close($conn);
 ?>
  
