@@ -56,7 +56,7 @@
   </html>
 
 <?php
-include 'dbConnect.php';
+include 'connection.php';
 $query ="SELECT Kinyarwanda FROM noun_translation ORDER BY RAND() LIMIT 1";
     $word = filter_input(INPUT_POST, 'var');
     
