@@ -1,20 +1,13 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-        <style type="text/css">
-         body  {
-       background:grey;
-       text-align: center;
+ 
 
-     }
-     .form
+<DOCKTYPE HTML>
+    <!DOCTYPE html>
+    <head>
+        <title>
+            searches  word
+        </title>
+        <style type="text/css">
+.td
      {
         background-color:wheat;
         border: none;
@@ -28,106 +21,147 @@ and open the template in the editor.
         border-radius: 50px;
 
      }
-     .td
-     {
-        background-color:black;
-        border: none;
-        color: white;
-        padding: 20px;
+     body{
         text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        border-radius: 50px;
-
      }
-     .td:hover{
-    background: #fff;
-    color: #000;
-
-}
-
-.btntwo:hover{
-    background: #fff;
-    color: #000;
-
-}
-.btntwo{
-    border-radius: 100px;
-}
-
+       
+        </style>
+         </head>
+    <body>
+        <form name="getnoun" method="post" action="index.php">
+    <table>
+        <tr>
+            <td class="td">
+                Search Button
+            </td>
+            <td >
+                <input class="" type="text" name="var"  placeholder="Search">
+            </td>
+             
+            <td class="td">
+                <a href="noun.php">Insert Word</a>
+            </td>
             
 
-        </style>
-    </head>
-    <body>
+        </tr>
+    </table>
+    <p><h1>Translation Button<h1></p>
+     <INPUT type="submit" name="ran" value="Retrieve" class="td">
+     <input type="submit" name="kin" value="Kinyarwanda" class="td">
+    <input type="submit" name="eng" value="English" class="td">
+    <input type="submit" name="fren" value="French" class="td">
+    <input type="submit" name="kisw" value="Kiswahili" class="td">
+       </form>
+    </body>
+  </html>
+
+<?php
+$con= new mysqli("localhost","root","","PHP");
+$query ="SELECT Kinyarwanda FROM noun_translation ORDER BY RAND() LIMIT 1";
+    $word = filter_input(INPUT_POST, 'var');
+    
+    // Check connection
+    if (mysqli_connect_errno())
+      {
+      echo "Failed to connect to MySQL: " . mysqli_connect_error();
+      }
+      ?>
+<?php
+    if (isset($_POST['ran'])) {
+          $result = mysqli_query($con,$query );
+          ?>
+<TABLE class="td" >
+    <tr class="td">
+        <th bgcolor="red"> Random Word typed</th>
+    </tr>
+    <?php
+          while ($row=  mysqli_fetch_array($result)) {
+        print"<tr><td>";
+echo $row['Kinyarwanda'];
+echo "<br>";
+print"</td></tr>";
+    }
+}
+?>
+    <?php
+      if (isset($_POST['kin'])&& $word !=null){
+          $result = mysqli_query($con, "SELECT Kinyarwanda FROM noun_translation
+                WHERE Kinyarwanda LIKE '%{$word}%' OR English LIKE '%{$word}%' OR French LIKE '%{$word}' OR Kiswahili LIKE '%{$word}'");    
+?>
+<TABLE border ="2">
+    <tr>
+        <th bgcolor="blue"> IKinyarwanda</th>
+    </tr>
+<?php
+    while ($row=  mysqli_fetch_array($result)) {
+        print"<tr><td>";
+echo $row['Kinyarwanda'];
+echo "<br>";
+print"</td></tr>";
         
-        <form name="form" method="post" action="index.php" class="form">
-             
-                
-                             Type any word
-                        
-                            <input class="td" type="text" name="Vname" required="true"><br>
-                        
-                         
-                            Ikinyarwanda
-                    
-                            <input class="td" type="text" name="kin" required="true"><br>
-                       
-                        
-                            English
-                       
-                            <input class="td" type="text" name="eng"  required="true"><br>
-                         
-                         
-                            French
-                        
-                            <input class="td" type="text" name="fren" required="true"><br>
-                         
-                         
-                            Kiswahili
-                        
-                            <input class="td" type="text" name="kisw" required="true"><br>
-   
-                            <input class="btntwo" type="submit" name="save" value="Submit">
-            </form>
-        
-        <?php
-        include("connection.php");
-        $noun = filter_input(INPUT_POST, 'Vname');
-        $kin = filter_input(INPUT_POST, 'kin');
-        $eng = filter_input(INPUT_POST, 'eng');
-        $fren = filter_input(INPUT_POST, 'fren');
-        $kisw = filter_input(INPUT_POST, 'kisw');
-
-$cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-$cleardb_server = $cleardb_url["host"];
-$cleardb_username = $cleardb_url["user"];
-$cleardb_password = $cleardb_url["pass"];
-$cleardb_db = substr($cleardb_url["path"],1);
-$active_group = 'default';
-$query_builder = TRUE;
-$db = mysqli_connect($cleardb_server, $cleardb_username, $cleardb_password, $cleardb_db);
-
-if (mysqli_connect_error()){
-die('Connect Error ('. mysqli_connect_errno() .') '
-. mysqli_connect_error());
+    }
 }
-else{
-$sql = "INSERT INTO noun_translation (V_Name ,Kinyarwanda ,English ,French ,Kiswahili)values ('$noun' ,'$kin' ,'$eng' ,'$fren' ,'$kisw')";
-if (($sql)){
-echo "";
-}
-else{
-echo "Error: ". $sql ."
-". $conn->error;
-}
-$conn->close();
-}
-
 
 ?>
-        
-    </body>
-</html>
+    <?php
+      if (isset ($_POST['eng']) && $word !=null) {
+          $result = mysqli_query($con, "SELECT English FROM noun_translation
+    WHERE Kinyarwanda LIKE '%{$word}%' OR English LIKE '%{$word}%' OR French LIKE '%{$word}' OR Kiswahili LIKE '%{$word}'");
+    ?>
+    <TABLE class="td">
+    <tr class="td">
+        <th bgcolor="blue"> Icyongereza </th>
+    </tr>
+    <?php
+while ($row = mysqli_fetch_array($result))
+{
+    print"<tr><td>";
+        echo $row['English'];
+        echo "<br>";
+        print"</td></tr>";
+}
+}
+ 
+?>
+    <?php
+if (isset ($_POST['fren'])&& $word != NULL) {
+    $result = mysqli_query($con, "SELECT French FROM noun_translation
+    WHERE Kinyarwanda LIKE '%{$word}%' OR English LIKE '%{$word}%' OR French LIKE '%{$word}' OR Kiswahili LIKE '%{$word}'");
+    ?>
+    <TABLE  class="td">
+    <tr class="td">
+        <th bgcolor="blue"> Ikifaransa </th>
+    </tr>
+    <?php
+while ($row = mysqli_fetch_array($result))
+{
+    print"<tr><td>";
+echo $row['French'];
+echo "<br>";
+print"</td></tr>";
+}
+}
+ 
+?>
+    <?php
+if (isset ($_POST['kisw']) && $word !=NULL) {
+    $result = mysqli_query($con, "SELECT Kiswahili FROM noun_translation
+    WHERE Kinyarwanda LIKE '%{$word}%' OR English LIKE '%{$word}%' OR French LIKE '%{$word}' OR Kiswahili LIKE '%{$word}'");
+?>
+    <TABLE class="td">
+    <tr class="td">
+        <th bgcolor="blue"> Ikiswahili </th>
+    </tr>
+    <?php
+while ($row = mysqli_fetch_array($result))
+{
+    print"<tr><td>";
+echo $row['Kiswahili'];
+echo "<br>";
+print"</td></tr>";
+}
+}
+ 
+mysqli_close($con);
+?>
+ 
