@@ -97,21 +97,12 @@ and open the template in the editor.
             </form>
         
         <?php
-
         $noun = filter_input(INPUT_POST, 'Vname');
         $kin = filter_input(INPUT_POST, 'kin');
         $eng = filter_input(INPUT_POST, 'eng');
         $fren = filter_input(INPUT_POST, 'fren');
         $kisw = filter_input(INPUT_POST, 'kisw');
-$cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-$cleardb_server = $cleardb_url["host"];
-$cleardb_username = $cleardb_url["user"];
-$cleardb_password = $cleardb_url["pass"];
-$cleardb_db = substr($cleardb_url["path"],1);
-$active_group = 'default';
-$query_builder = TRUE;
-
-$con = mysqli_connect($cleardb_server, $cleardb_username, $cleardb_password, $cleardb_db);
+include 'dbConnect.php';
 if (mysqli_connect_error()){
 die('Connect Error ('. mysqli_connect_errno() .') '
 . mysqli_connect_error());
@@ -123,9 +114,9 @@ echo "";
 }
 else{
 echo "Error: ". $sql ."
-". $con->error;
+". $conn->error;
 }
-$con->close();
+$conn->close();
 }
 
 
